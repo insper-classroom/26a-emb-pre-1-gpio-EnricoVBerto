@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 const int LED_PIN_R = 5;
+const int LED_PIN_Y = 28;
 
 int main() {
   stdio_init_all();
@@ -12,9 +13,11 @@ int main() {
 
   while (true) {
     gpio_put(LED_PIN_R, 1);
+    gpio_put(LED_PIN_Y, 1);
     sleep_ms(250);
 
     gpio_put(LED_PIN_R, 0);
+    gpio_put(LED_PIN_Y, 0);
     sleep_ms(250);
   }
 }
