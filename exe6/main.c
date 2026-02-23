@@ -45,7 +45,7 @@ int main(void) {
     seven_seg_init();
 
     seven_seg_display(0);
-    sleep_ms(60);
+    sleep_ms(120);
     seven_seg_display(1);
 
     while (true) {

@@ -2,10 +2,10 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
 
-#define LED_PIN_R      5
-#define LED_PIN_ROXO   8
-#define LED_PIN_AZUL   11
-#define LED_PIN_AMARELO 15
+const uint LED_PIN_R = 5;
+const uint LED_PIN_ROXO = 8;
+const uint LED_PIN_AZUL = 11;
+const uint LED_PIN_AMARELO = 15;
 
 int main(void) {
     stdio_init_all();
@@ -22,26 +22,26 @@ int main(void) {
     gpio_init(LED_PIN_AMARELO);
     gpio_set_dir(LED_PIN_AMARELO, GPIO_OUT);
 
-    gpio_put(LED_PIN_R, 1);
-    gpio_put(LED_PIN_ROXO, 1);
-    gpio_put(LED_PIN_AZUL, 1);
-    gpio_put(LED_PIN_AMARELO, 1);
+    gpio_put(LED_PIN_R, 0);
+    gpio_put(LED_PIN_ROXO, 0);
+    gpio_put(LED_PIN_AZUL, 0);
+    gpio_put(LED_PIN_AMARELO, 0);
+
+    sleep_ms(120);
 
     while (true) {
-        sleep_ms(100);
+        gpio_put(LED_PIN_R, 1);
+        gpio_put(LED_PIN_ROXO, 1);
+        gpio_put(LED_PIN_AZUL, 1);
+        gpio_put(LED_PIN_AMARELO, 1);
+
+        sleep_ms(60);
 
         gpio_put(LED_PIN_R, 0);
         gpio_put(LED_PIN_ROXO, 0);
         gpio_put(LED_PIN_AZUL, 0);
         gpio_put(LED_PIN_AMARELO, 0);
 
-        sleep_ms(50);
-
-        gpio_put(LED_PIN_R, 1);
-        gpio_put(LED_PIN_ROXO, 1);
-        gpio_put(LED_PIN_AZUL, 1);
-        gpio_put(LED_PIN_AMARELO, 1);
-
-        sleep_ms(50);
+        sleep_ms(60);
     }
 }
