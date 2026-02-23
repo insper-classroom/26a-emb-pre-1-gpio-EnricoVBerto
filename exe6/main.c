@@ -1,13 +1,9 @@
 #include <stdio.h>
-
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 
 int FIRST_GPIO = 2;
 const int BTN_PIN_G = 28;
-
-int cnt = 0;
-int last_btn = 1;
 
 int bits[10] = {
     0x3f,
@@ -29,8 +25,8 @@ void seven_seg_init() {
     }
 }
 
-void seven_seg_display() {
-    int value = bits[cnt];
+void seven_seg_display(int n) {
+    int value = bits[n];
     for (int i = 0; i < 7; i++) {
         int gpio = FIRST_GPIO + i;
         int bit = (value >> i) & 1;
@@ -46,7 +42,11 @@ int main() {
     gpio_pull_up(BTN_PIN_G);
 
     seven_seg_init();
-    seven_seg_display();
+
+    int cnt = 0;
+    int last_btn = 1;
+
+    seven_seg_display(cnt);
 
     while (true) {
         int btn = gpio_get(BTN_PIN_G);
@@ -56,7 +56,7 @@ int main() {
             if (gpio_get(BTN_PIN_G) == 0) {
                 cnt++;
                 if (cnt > 9) cnt = 0;
-                seven_seg_display();
+                seven_seg_display(cnt);
                 printf("cnt: %d\n", cnt);
                 while (gpio_get(BTN_PIN_G) == 0) { }
             }
