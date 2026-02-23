@@ -2,8 +2,8 @@
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 
-int FIRST_GPIO = 2;
-const int BTN_PIN_G = 28;
+#define FIRST_GPIO 2
+#define BTN_PIN_G 28
 
 int bits[10] = {
     0x3f,
@@ -18,23 +18,23 @@ int bits[10] = {
     0x67
 };
 
-void seven_seg_init() {
+void seven_seg_init(void) {
     for (int gpio = FIRST_GPIO; gpio < FIRST_GPIO + 7; gpio++) {
         gpio_init(gpio);
         gpio_set_dir(gpio, GPIO_OUT);
     }
 }
 
-void seven_seg_display(int n) {
-    int value = bits[n];
+void seven_seg_display(int cnt) {
+    int value = bits[cnt];
     for (int i = 0; i < 7; i++) {
         int gpio = FIRST_GPIO + i;
         int bit = (value >> i) & 1;
-        gpio_put(gpio, bit);
+        gpio_put(gpio, bit ^ 1);
     }
 }
 
-int main() {
+int main(void) {
     stdio_init_all();
 
     gpio_init(BTN_PIN_G);
