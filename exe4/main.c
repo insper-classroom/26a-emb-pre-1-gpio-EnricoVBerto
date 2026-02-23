@@ -1,5 +1,5 @@
-#include "hardware/gpio.h"
 #include "pico/stdlib.h"
+#include "hardware/gpio.h"
 #include <stdio.h>
 
 const uint LED_PIN_R = 5;
@@ -12,22 +12,21 @@ int main(void) {
 
     gpio_init(LED_PIN_R);
     gpio_set_dir(LED_PIN_R, GPIO_OUT);
+    gpio_put(LED_PIN_R, 0);
 
     gpio_init(LED_PIN_ROXO);
     gpio_set_dir(LED_PIN_ROXO, GPIO_OUT);
+    gpio_put(LED_PIN_ROXO, 0);
 
     gpio_init(LED_PIN_AZUL);
     gpio_set_dir(LED_PIN_AZUL, GPIO_OUT);
+    gpio_put(LED_PIN_AZUL, 0);
 
     gpio_init(LED_PIN_AMARELO);
     gpio_set_dir(LED_PIN_AMARELO, GPIO_OUT);
-
-    gpio_put(LED_PIN_R, 0);
-    gpio_put(LED_PIN_ROXO, 0);
-    gpio_put(LED_PIN_AZUL, 0);
     gpio_put(LED_PIN_AMARELO, 0);
 
-    sleep_ms(120);
+    sleep_ms(150);
 
     while (true) {
         gpio_put(LED_PIN_R, 1);
