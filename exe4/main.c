@@ -26,7 +26,7 @@ int main(void) {
     gpio_set_dir(LED_PIN_AMARELO, GPIO_OUT);
     gpio_put(LED_PIN_AMARELO, 0);
 
-    sleep_ms(150);
+    sleep_ms(110);
 
     while (true) {
         gpio_put(LED_PIN_R, 1);
