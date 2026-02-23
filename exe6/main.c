@@ -6,22 +6,20 @@
 int FIRST_GPIO = 2;
 const int BTN_PIN_G = 28;
 
-int BUTTON_GPIO;
-int cnt;
-int last_btn; // Button not pressed (pulled up)
+int cnt = 0;
+int last_btn = 1;
 
-// This array converts a number 0-9 to a bit pattern to send to the GPIOs
 int bits[10] = {
-    0x3f,  // 0
-    0x06,  // 1
-    0x5b,  // 2
-    0x4f,  // 3
-    0x66,  // 4
-    0x6d,  // 5
-    0x7d,  // 6
-    0x07,  // 7
-    0x7f,  // 8
-    0x67   // 9
+    0x3f,
+    0x06,
+    0x5b,
+    0x4f,
+    0x66,
+    0x6d,
+    0x7d,
+    0x07,
+    0x7f,
+    0x67
 };
 
 void seven_seg_init() {
@@ -42,27 +40,29 @@ void seven_seg_display() {
 
 int main() {
     stdio_init_all();
-    int aux = 0;
-
-    BUTTON_GPIO = FIRST_GPIO + 7;
 
     gpio_init(BTN_PIN_G);
     gpio_set_dir(BTN_PIN_G, GPIO_IN);
     gpio_pull_up(BTN_PIN_G);
 
     seven_seg_init();
-    seven_seg_display(2);
+    seven_seg_display();
 
     while (true) {
         int btn = gpio_get(BTN_PIN_G);
-        if (last_btn && !btn) { // Detect falling edge (press)
-            if (++cnt > 9) {
-                cnt = 0;
+
+        if (last_btn == 1 && btn == 0) {
+            sleep_ms(20);
+            if (gpio_get(BTN_PIN_G) == 0) {
+                cnt++;
+                if (cnt > 9) cnt = 0;
+                seven_seg_display();
+                printf("cnt: %d\n", cnt);
+                while (gpio_get(BTN_PIN_G) == 0) { }
             }
-            seven_seg_display();
-            printf("cnt: %l\n", cnt);
         }
+
         last_btn = btn;
-        sleep_ms(10); // Polling interval
+        sleep_ms(1);
     }
 }
