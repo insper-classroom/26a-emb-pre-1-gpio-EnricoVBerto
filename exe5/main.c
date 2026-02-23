@@ -5,7 +5,7 @@
 const int BTN_PIN = 26;
 const int BTN_PIN_2 = 7;
 
-int main() {
+int main(void) {
     stdio_init_all();
 
     gpio_init(BTN_PIN);
@@ -32,6 +32,7 @@ int main() {
                 cnt_1++;
                 printf("Botao 1: %d\n", cnt_1);
                 while (gpio_get(BTN_PIN) == 0) { }
+                sleep_ms(20);
             }
         }
 
@@ -41,6 +42,7 @@ int main() {
                 cnt_2++;
                 printf("Botao 2: %d\n", cnt_2);
                 while (gpio_get(BTN_PIN_2) == 0) { }
+                sleep_ms(20);
             }
         }
 
