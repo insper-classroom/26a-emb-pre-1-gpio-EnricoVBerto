@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 
@@ -34,11 +35,14 @@ void seven_seg_display(int n) {
     }
 }
 
+static inline bool btn_pressed(void) {
+    return gpio_get(BTN_PIN_G) == 0;
+}
+
 int main(void) {
     stdio_init_all();
 
     int cnt = 0;
-    int last_btn = 1;
 
     gpio_init(BTN_PIN_G);
     gpio_set_dir(BTN_PIN_G, GPIO_IN);
@@ -47,17 +51,27 @@ int main(void) {
     seven_seg_init();
     seven_seg_display(cnt);
 
+    bool last_pressed = false;
+
     while (true) {
-        int now_btn = gpio_get(BTN_PIN_G);
-        if (last_btn == 1 && !now_btn) {
+        bool now_pressed = btn_pressed();
+
+        if (!last_pressed && now_pressed) {
             sleep_ms(20);
-            if (++cnt > 9) {
-                cnt = 0;
+            if (btn_pressed()) {
+                cnt++;
+                if (cnt > 9) cnt = 0;
+
+                seven_seg_display(cnt);
+                printf("cnt: %d\n", cnt);
+
+                while (btn_pressed()) {
+                    sleep_ms(10);
+                }
             }
-            seven_seg_display(cnt);
-            printf("cnt: %d\n", cnt);
         }
-        last_btn = now_btn;
+
+        last_pressed = now_pressed;
         sleep_ms(10);
     }
 }
